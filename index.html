@@ -55,7 +55,6 @@ nav{display:flex;align-items:center;justify-content:space-between;height:64px;ma
   align-items: flex-end;
   background: var(--cream);
 }
-
 .hero img {
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -63,14 +62,12 @@ nav{display:flex;align-items:center;justify-content:space-between;height:64px;ma
   object-fit: cover;
   object-position: center top; 
 }
-  
 .hero::before {
   content: "";
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
   background: linear-gradient(180deg, rgba(42,23,18,0) 0%, rgba(42,23,18,0.1) 40%, rgba(42,23,18,0.95) 100%);
 }
-
 .hero-content {
   position: relative;
   z-index: 2;
@@ -80,7 +77,6 @@ nav{display:flex;align-items:center;justify-content:space-between;height:64px;ma
   margin: 0 auto;
   color: #fff;
 }
-
 .hero-content p {
   max-width: 520px;
   font-size: 1.15rem;
@@ -93,26 +89,12 @@ nav{display:flex;align-items:center;justify-content:space-between;height:64px;ma
   border: 1px solid rgba(255, 255, 255, 0.15);
   text-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
+.hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
 
-.hero-actions {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-/* MEDIA QUERY: Evitar superposición estricta en Laptops/Desktop */
 @media(min-width: 900px) {
-  .hero-content {
-    padding-bottom: 2.5rem; 
-  }
-  .hero-content p {
-    max-width: 380px; 
-  }
-  .hero-actions {
-    max-width: 380px; 
-    flex-direction: column; 
-    align-items: flex-start;
-  }
+  .hero-content { padding-bottom: 2.5rem; }
+  .hero-content p { max-width: 380px; }
+  .hero-actions { max-width: 380px; flex-direction: column; align-items: flex-start; }
 }
 
 .btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--terracotta);color:#fff;border:none;
@@ -120,16 +102,8 @@ nav{display:flex;align-items:center;justify-content:space-between;height:64px;ma
   box-shadow:0 8px 20px rgba(184,92,53,.35);transition:transform .2s,background .2s;}
 .btn:hover{background:var(--wine);transform:translateY(-2px);}
 
-.btn.ghost {
-  background: rgba(0, 0, 0, 0.5); 
-  backdrop-filter: blur(6px);
-  border: 2px solid rgba(255, 255, 255, 0.8);
-  box-shadow: none;
-}
-.btn.ghost:hover {
-  background: rgba(0, 0, 0, 0.7);
-  border-color: #fff;
-}
+.btn.ghost { background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(6px); border: 2px solid rgba(255, 255, 255, 0.8); box-shadow: none; }
+.btn.ghost:hover { background: rgba(0, 0, 0, 0.7); border-color: #fff; }
 
 /* SECTIONS */
 section{padding:5rem 0;}
@@ -166,13 +140,30 @@ section{padding:5rem 0;}
 @media(max-width:900px){.card{flex-basis:calc((100% - 1.5rem)/2);}}
 @media(max-width:600px){.card{flex-basis:88%;}}
 
+/* PHOTO CAROUSEL SPECIFIC */
+.photo-card {
+  flex: 0 0 calc((100% - 3rem)/3); scroll-snap-align: start;
+  border-radius: var(--radius); overflow: hidden; cursor: pointer;
+  aspect-ratio: 4/3; box-shadow: 0 6px 18px rgba(42,23,18,.1);
+  border: 1px solid rgba(107,20,64,.08); position: relative;
+}
+.photo-card img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.4s ease;
+}
+.photo-card:hover img {
+  transform: scale(1.05);
+}
+@media(max-width:900px){.photo-card{flex-basis:calc((100% - 1.5rem)/2);}}
+@media(max-width:600px){.photo-card{flex-basis:88%;}}
+
 .carousel-nav{display:flex;gap:.6rem;justify-content:flex-end;margin-bottom:1.2rem;}
 .carousel-nav button{width:42px;height:42px;border-radius:50%;border:1px solid rgba(107,20,64,.25);
   background:#fff;color:var(--wine);cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;
   transition:background .2s,color .2s;}
 .carousel-nav button:hover{background:var(--wine);color:#fff;}
 
-/* VENTANA MODAL (PHOTOS Y VIDEOS) */
+/* VENTANA MODAL */
 .modal {
   display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%;
   background: rgba(0,0,0,0.85); backdrop-filter: blur(5px);
@@ -197,7 +188,7 @@ section{padding:5rem 0;}
 
 /* SORTEO */
 #sorteo{background:linear-gradient(160deg,var(--wine) 0%,var(--wine-dark) 100%);color:#fff;position:relative;overflow:hidden;}
-#sorteo::after{content:"absolute";left:-10%;bottom:-30%;width:60%;aspect-ratio:1;
+#sorteo::after{content:"";position:absolute;left:-10%;bottom:-30%;width:60%;aspect-ratio:1;
   background:radial-gradient(circle,var(--gold) 0%,transparent 70%);opacity:.25;pointer-events:none;}
 #sorteo .section-head p{color:#e9d7c8;}
 #sorteo .section-head h2{color:#fff;}
@@ -249,7 +240,6 @@ footer{background:var(--wine-dark);color:#f1e3d7;padding:3.5rem 0 2rem;position:
 </header>
 
 <section class="hero" id="home">
-  <!-- Imágen de fondo -->
   <img src="./hero.jpeg" alt="Paisaje de la Quebrada con logo Visita Cafayate">
   <div class="hero-content">
     <p>Cañones de piedra roja, viñedos de altura y un río que corre entre los cerros. Cafayate te espera con paisajes que no vas a olvidar.</p>
@@ -276,6 +266,7 @@ footer{background:var(--wine-dark);color:#f1e3d7;padding:3.5rem 0 2rem;position:
   </div>
 </section>
 
+<!-- SECCIÓN FOTOS ACTUALIZADA -->
 <section id="fotos">
   <div class="wrap">
     <div class="section-head">
@@ -287,6 +278,7 @@ footer{background:var(--wine-dark);color:#f1e3d7;padding:3.5rem 0 2rem;position:
         <button aria-label="Anterior" data-dir="-1" data-target="fotos-track">‹</button>
         <button aria-label="Siguiente" data-dir="1" data-target="fotos-track">›</button>
       </div>
+      <!-- Aquí se inyectarán las imágenes -->
       <div class="carousel-track" id="fotos-track"></div>
     </div>
   </div>
@@ -393,7 +385,7 @@ navlinks.querySelectorAll('[data-close]').forEach(a=>a.addEventListener('click',
   navlinks.classList.remove('open');burger.setAttribute('aria-expanded','false');
 }));
 
-// Funciones del Modal con soporte de YouTube
+// Funciones del Modal con soporte de YouTube y Fotos
 const modal = document.getElementById('media-modal');
 const modalBody = document.getElementById('modal-body');
 const closeModalBtn = document.getElementById('close-modal');
@@ -401,7 +393,7 @@ const closeModalBtn = document.getElementById('close-modal');
 function openModal(title, desc, type, url) {
   let mediaContent = '';
 
-  if (type === 'video' && url) {
+  if ((type === 'video' || type === 'music') && url) {
     mediaContent = `
       <iframe width="100%" height="100%" style="aspect-ratio: 16/9; border-radius: 8px;" 
               src="${url}?autoplay=1" title="${title}" frameborder="0" 
@@ -409,66 +401,54 @@ function openModal(title, desc, type, url) {
               allowfullscreen>
       </iframe>`;
   } else if (type === 'foto' && url) {
-    mediaContent = `<img src="${url}" alt="${title}" style="width: 100%; border-radius: 8px; object-fit: cover; aspect-ratio: 16/9;">`;
+    mediaContent = `<img src="${url}" alt="${title}" style="width: 100%; border-radius: 8px; object-fit: contain; max-height: 75vh;">`;
   } else {
     mediaContent = `
       <div class="modal-media-placeholder">
-         ${type === 'video' ? '▶ Reproductor de Video' : '📷 Visor de Imagen'}
+         ${type === 'foto' ? '📷 Visor de Imagen' : '▶ Reproductor de Video'}
          <small style="font-weight:400;font-size:0.85rem;margin-top:8px;">(Falta agregar URL para: ${title})</small>
       </div>`;
   }
 
+  // Si hay título o descripción los mostramos, sino evitamos el espacio en blanco extra
+  const textHtml = (title || desc) ? `
+    <div class="modal-text">
+      ${title ? `<h3 style="color:var(--wine);">${title}</h3>` : ''}
+      ${desc ? `<p style="color:var(--ink);">${desc}</p>` : ''}
+    </div>
+  ` : '';
+
   modalBody.innerHTML = `
     ${mediaContent}
-    <div class="modal-text">
-      <h3 style="color:var(--wine);">${title}</h3>
-      <p style="color:var(--ink);">${desc}</p>
-    </div>
+    ${textHtml}
   `;
   modal.classList.add('show');
 }
 
-// Cerrar modal y limpiar contenido para detener los videos
 function closeModal() {
   modal.classList.remove('show');
-  setTimeout(() => modalBody.innerHTML = '', 300); // Borra el iframe tras la transición visual
+  setTimeout(() => modalBody.innerHTML = '', 300); 
 }
 
 closeModalBtn.addEventListener('click', closeModal);
 modal.addEventListener('click', (e) => { if(e.target === modal) closeModal(); });
 
-// Datos de contenido (Añadir URLs en los espacios correspondientes)
+// Datos Globales
 const colores=['var(--terracotta)','var(--wine)','var(--olive)','var(--sky)','var(--gold)','var(--terracotta)'];
-
-const videos=[
-  // Ejemplo con un link válido de inserción de YouTube
-  {t:'Cafayate te está esperando',d:'La experiencia que tanto estabas esperando', url:'https://www.youtube.com/embed/kVKxmDq-SSQ'},
-  {t:'Bodegas de altura',d:'Un paseo por los viñedos y el Torrontés.', url:'https://www.youtube.com/embed/uxzf98El3_Y'},
-  {t:'Río Colorado',d:'El agua que esculpió estos cañones.', url:'https://www.youtube.com/embed/RkUYJgBEc6g'},
-  {t:'Ruta 40 de Cafayate a Cachi',d:'Colores que cambian con la luz del sol.', url:'https://www.youtube.com/embed/PpFV2SHGsxc'},
-  {t:'Cerro de los Colorados',d:'Vistas panorámicas de todo el valle.', url:'https://www.youtube.com/embed/CsTCX63wKnY'},
-  {t:'Fiestas y tradiciones', d:'La cultura viva de Cafayate.', url:'https://www.youtube.com/embed/DEmJF2pp64Q'}
-];
-const fotos=[
-  // Para las fotos, insertar la ruta a tus imágenes locales o URLs directas
-  {t:'Garganta del Diablo',d:'Una de las formaciones más visitadas.', url:''},
-  {t:'Anfiteatro natural',d:'Acústica única entre las rocas rojas.', url:''},
-  {t:'Viñedos al atardecer',d:'Los colores del valle en su mejor hora.', url:''},
-  {t:'Castillos de piedra',d:'Formaciones talladas por el viento y el agua.', url:''},
-  {t:'Plaza principal',d:'El corazón del pueblo de Cafayate.', url:''},
-  {t:'Cielo de altura',d:'Noches estrelladas en el valle Calchaquí.', url:''}
-];
 
 function iconSVG(kind){
   if(kind==='video')return '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
   if(kind==='music')return '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v10.55A4 4 0 1 0 14 17V7h5V3h-7z"/></svg>';
-  return '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 19V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5z"/></svg>';
+  return '';
 }
 
+// ---------------------------
+// 1. VIDEOS Y MÚSICA (Cards)
+// ---------------------------
 function fill(id,data,kind,palette){
   palette=palette||colores;
   const track=document.getElementById(id);
-  const isInteractive = (kind === 'video' || kind === 'foto');
+  const isInteractive = (kind === 'video' || kind === 'music');
   
   track.innerHTML=data.map((it,i)=>`
     <div class="card ${isInteractive ? 'clickable' : ''}" 
@@ -486,28 +466,107 @@ function fill(id,data,kind,palette){
   }
 }
 
+const videos=[
+  {t:'Cafayate te está esperando',d:'La experiencia que tanto estabas esperando', url:'https://www.youtube.com/embed/kVKxmDq-SSQ'},
+  {t:'Bodegas de altura',d:'Un paseo por los viñedos y el Torrontés.', url:'https://www.youtube.com/embed/uxzf98El3_Y'},
+  {t:'Río Colorado',d:'El agua que esculpió estos cañones.', url:'https://www.youtube.com/embed/RkUYJgBEc6g'},
+  {t:'Ruta 40 de Cafayate a Cachi',d:'Colores que cambian con la luz del sol.', url:'https://www.youtube.com/embed/PpFV2SHGsxc'},
+  {t:'Cerro de los Colorados',d:'Vistas panorámicas de todo el valle.', url:'https://www.youtube.com/embed/CsTCX63wKnY'},
+  {t:'Fiestas y tradiciones', d:'La cultura viva de Cafayate.', url:'https://www.youtube.com/embed/DEmJF2pp64Q'}
+];
 fill('videos-track',videos,'video');
-fill('fotos-track',fotos,'foto');
 
 const musica=[
-  {t:'Charango',d:'Cuerdas que le dan alma al folclore calchaquí.'},
-  {t:'Bombo legüero',d:'El corazón que marca el ritmo de las peñas.'},
-  {t:'Quena',d:'El viento de los cerros hecho melodía.'},
-  {t:'Sikus (zampoña)',d:'Cañas andinas que suenan al atardecer.'},
-  {t:'Erke',d:'Un sonido ancestral que anuncia las fiestas.'},
-  {t:'Caja vidalera',d:'Compañera infaltable de las coplas norteñas.'}
+  {
+    t:"Lautaro D'amico",
+    d:"Joven y virtuoso bandoneonista nacido en Cafayate que lleva la cultura salteña y el folclore por el mundo.", 
+    url:"https://www.youtube.com/embed/QNqjgKVSu6w"
+  }
 ];
 fill('musica-track',musica,'music',['rgba(10,40,65,.35)','rgba(10,40,65,.2)']);
 
-// Carrusel: mover de a 3 tarjetas
+// ---------------------------
+// 2. NUEVA GALERÍA DE FOTOS
+// ---------------------------
+const fotosUrls = [
+  'https://i.ibb.co/nNZCCWs3/castillos1.jpg',
+  'https://i.ibb.co/hJDTzKYc/castillos2.jpg',
+  'https://i.ibb.co/8nrzJ0H4/castillos3.jpg',
+  'https://i.ibb.co/ynQB0vB6/castillos4.jpg',
+  'https://i.ibb.co/MDwFLVqT/castillos5.jpg',
+  'https://i.ibb.co/jPmtd2Wp/estratos.jpg',
+  'https://i.ibb.co/FbKqRcbW/estratos2.jpg',
+  'https://i.ibb.co/Xfyhg7rJ/estratos3.jpg',
+  'https://i.ibb.co/LDXyMDfz/hero.jpg',
+  'https://i.ibb.co/W4H5r3mY/iglesia.jpg',
+  'https://i.ibb.co/XxvnbyBW/quebrada2.jpg',
+  'https://i.ibb.co/dwmDp59c/quebradas.jpg',
+  'https://i.ibb.co/zWHpR08D/trekking.jpg'
+];
+
+const fotosTrack = document.getElementById('fotos-track');
+
+// Rellenar las imágenes en el carrusel
+fotosTrack.innerHTML = fotosUrls.map(url => `
+  <div class="photo-card" data-url="${url}">
+    <img src="${url}" alt="Paisaje de Cafayate" loading="lazy">
+  </div>
+`).join('');
+
+// Evento Modal para las Fotos
+fotosTrack.querySelectorAll('.photo-card').forEach(card => {
+  card.addEventListener('click', () => {
+    openModal('Galería de Cafayate', '', 'foto', card.dataset.url);
+  });
+});
+
+// Función de Auto-Scroll suave cada 3 segundos
+function scrollFotos(dir = 1) {
+  const card = fotosTrack.querySelector('.photo-card');
+  if(!card) return;
+  const gap = 24; // Corresponde al gap de 1.5rem
+  const step = card.getBoundingClientRect().width + gap;
+  
+  // Si llega al final y va hacia adelante, reinicia la vista
+  if (dir === 1 && Math.ceil(fotosTrack.scrollLeft + fotosTrack.clientWidth) >= fotosTrack.scrollWidth) {
+      fotosTrack.scrollTo({left: 0, behavior: 'smooth'});
+  } else {
+      fotosTrack.scrollBy({left: step * dir, behavior: 'smooth'});
+  }
+}
+let autoScrollFotos = setInterval(() => scrollFotos(1), 3000);
+
+
+// ---------------------------
+// 3. EVENTOS DE LOS BOTONES DE NAVEGACIÓN
+// ---------------------------
 document.querySelectorAll('.carousel-nav button').forEach(btn=>{
   btn.addEventListener('click',()=>{
-    const track=document.getElementById(btn.dataset.target);
-    const card=track.querySelector('.card');
-    if(!card)return;
-    const gap=24;
-    const step=(card.getBoundingClientRect().width+gap)*3;
-    track.scrollBy({left:step*Number(btn.dataset.dir),behavior:'smooth'});
+    const track = document.getElementById(btn.dataset.target);
+    const isPhotoTrack = (track.id === 'fotos-track');
+    
+    // Si es fotos mueve 1 imagen, si es videos/música mueve 3 cards
+    const cardClass = isPhotoTrack ? '.photo-card' : '.card';
+    const card = track.querySelector(cardClass);
+    if(!card) return;
+    
+    const gap = 24;
+    const multiplier = isPhotoTrack ? 1 : 3;
+    const step = (card.getBoundingClientRect().width + gap) * multiplier;
+    
+    // Lógica particular para las flechas del carrusel de Fotos (reiniciar timer y loop visual)
+    if (isPhotoTrack) {
+      clearInterval(autoScrollFotos);
+      autoScrollFotos = setInterval(() => scrollFotos(1), 3000);
+      
+      const dir = Number(btn.dataset.dir);
+      if (dir === 1 && Math.ceil(track.scrollLeft + track.clientWidth) >= track.scrollWidth) {
+         track.scrollTo({left: 0, behavior: 'smooth'});
+         return;
+      }
+    }
+    
+    track.scrollBy({left: step * Number(btn.dataset.dir), behavior:'smooth'});
   });
 });
 
