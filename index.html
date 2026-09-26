@@ -86,7 +86,6 @@ nav{display:flex;align-items:center;justify-content:space-between;height:64px;ma
   font-size: 1.15rem;
   margin-bottom: 1.6rem;
   font-weight: 500;
-  /* Fondo semi-transparente más claro */
   background: rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(6px);
   padding: 1.2rem 1.5rem;
@@ -121,7 +120,6 @@ nav{display:flex;align-items:center;justify-content:space-between;height:64px;ma
   box-shadow:0 8px 20px rgba(184,92,53,.35);transition:transform .2s,background .2s;}
 .btn:hover{background:var(--wine);transform:translateY(-2px);}
 
-/* Botón ghost con fondo más oscuro */
 .btn.ghost {
   background: rgba(0, 0, 0, 0.5); 
   backdrop-filter: blur(6px);
@@ -199,7 +197,7 @@ section{padding:5rem 0;}
 
 /* SORTEO */
 #sorteo{background:linear-gradient(160deg,var(--wine) 0%,var(--wine-dark) 100%);color:#fff;position:relative;overflow:hidden;}
-#sorteo::after{content:"";position:absolute;left:-10%;bottom:-30%;width:60%;aspect-ratio:1;
+#sorteo::after{content:"absolute";left:-10%;bottom:-30%;width:60%;aspect-ratio:1;
   background:radial-gradient(circle,var(--gold) 0%,transparent 70%);opacity:.25;pointer-events:none;}
 #sorteo .section-head p{color:#e9d7c8;}
 #sorteo .section-head h2{color:#fff;}
@@ -395,17 +393,33 @@ navlinks.querySelectorAll('[data-close]').forEach(a=>a.addEventListener('click',
   navlinks.classList.remove('open');burger.setAttribute('aria-expanded','false');
 }));
 
-// Funciones del Modal
+// Funciones del Modal con soporte de YouTube
 const modal = document.getElementById('media-modal');
 const modalBody = document.getElementById('modal-body');
 const closeModalBtn = document.getElementById('close-modal');
 
-function openModal(title, desc, type) {
+function openModal(title, desc, type, url) {
+  let mediaContent = '';
+
+  if (type === 'video' && url) {
+    mediaContent = `
+      <iframe width="100%" height="100%" style="aspect-ratio: 16/9; border-radius: 8px;" 
+              src="${url}?autoplay=1" title="${title}" frameborder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+              allowfullscreen>
+      </iframe>`;
+  } else if (type === 'foto' && url) {
+    mediaContent = `<img src="${url}" alt="${title}" style="width: 100%; border-radius: 8px; object-fit: cover; aspect-ratio: 16/9;">`;
+  } else {
+    mediaContent = `
+      <div class="modal-media-placeholder">
+         ${type === 'video' ? '▶ Reproductor de Video' : '📷 Visor de Imagen'}
+         <small style="font-weight:400;font-size:0.85rem;margin-top:8px;">(Falta agregar URL para: ${title})</small>
+      </div>`;
+  }
+
   modalBody.innerHTML = `
-    <div class="modal-media-placeholder">
-       ${type === 'video' ? '▶ Reproductor de Video' : '📷 Visor de Imagen'}
-       <small style="font-weight:400;font-size:0.85rem;margin-top:8px;">(Aquí se cargará: ${title})</small>
-    </div>
+    ${mediaContent}
     <div class="modal-text">
       <h3 style="color:var(--wine);">${title}</h3>
       <p style="color:var(--ink);">${desc}</p>
@@ -414,32 +428,43 @@ function openModal(title, desc, type) {
   modal.classList.add('show');
 }
 
-closeModalBtn.addEventListener('click', () => { modal.classList.remove('show'); });
-modal.addEventListener('click', (e) => { if(e.target === modal) modal.classList.remove('show'); });
+// Cerrar modal y limpiar contenido para detener los videos
+function closeModal() {
+  modal.classList.remove('show');
+  setTimeout(() => modalBody.innerHTML = '', 300); // Borra el iframe tras la transición visual
+}
 
-// Datos placeholder
+closeModalBtn.addEventListener('click', closeModal);
+modal.addEventListener('click', (e) => { if(e.target === modal) closeModal(); });
+
+// Datos de contenido (Añadir URLs en los espacios correspondientes)
 const colores=['var(--terracotta)','var(--wine)','var(--olive)','var(--sky)','var(--gold)','var(--terracotta)'];
+
 const videos=[
-  {t:'Quebrada de las Conchas',d:'El recorrido más icónico entre formaciones rojizas.'},
-  {t:'Bodegas de altura',d:'Un paseo por los viñedos y el Torrontés.'},
-  {t:'Río Santa María',d:'El agua que esculpió estos cañones.'},
-  {t:'Ruta 40 al atardecer',d:'Colores que cambian con la luz del sol.'},
-  {t:'Cerro de los Colorados',d:'Vistas panorámicas de todo el valle.'},
-  {t:'Fiestas y tradiciones', d:'La cultura viva de Cafayate.'}
+  // Ejemplo con un link válido de inserción de YouTube
+  {t:'Cafayate te está esperando',d:'La experiencia que tanto estabas esperando', url:'https://www.youtube.com/embed/kVKxmDq-SSQ'},
+  {t:'Bodegas de altura',d:'Un paseo por los viñedos y el Torrontés.', url:'https://www.youtube.com/embed/uxzf98El3_Y'},
+  {t:'Río Colorado',d:'El agua que esculpió estos cañones.', url:'https://www.youtube.com/embed/RkUYJgBEc6g'},
+  {t:'Ruta 40 de Cafayate a Cachi',d:'Colores que cambian con la luz del sol.', url:'https://www.youtube.com/embed/PpFV2SHGsxc'},
+  {t:'Cerro de los Colorados',d:'Vistas panorámicas de todo el valle.', url:'https://www.youtube.com/embed/CsTCX63wKnY'},
+  {t:'Fiestas y tradiciones', d:'La cultura viva de Cafayate.', url:'https://www.youtube.com/embed/DEmJF2pp64Q'}
 ];
 const fotos=[
-  {t:'Garganta del Diablo',d:'Una de las formaciones más visitadas.'},
-  {t:'Anfiteatro natural',d:'Acústica única entre las rocas rojas.'},
-  {t:'Viñedos al atardecer',d:'Los colores del valle en su mejor hora.'},
-  {t:'Castillos de piedra',d:'Formaciones talladas por el viento y el agua.'},
-  {t:'Plaza principal',d:'El corazón del pueblo de Cafayate.'},
-  {t:'Cielo de altura',d:'Noches estrelladas en el valle Calchaquí.'}
+  // Para las fotos, insertar la ruta a tus imágenes locales o URLs directas
+  {t:'Garganta del Diablo',d:'Una de las formaciones más visitadas.', url:''},
+  {t:'Anfiteatro natural',d:'Acústica única entre las rocas rojas.', url:''},
+  {t:'Viñedos al atardecer',d:'Los colores del valle en su mejor hora.', url:''},
+  {t:'Castillos de piedra',d:'Formaciones talladas por el viento y el agua.', url:''},
+  {t:'Plaza principal',d:'El corazón del pueblo de Cafayate.', url:''},
+  {t:'Cielo de altura',d:'Noches estrelladas en el valle Calchaquí.', url:''}
 ];
+
 function iconSVG(kind){
   if(kind==='video')return '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
   if(kind==='music')return '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v10.55A4 4 0 1 0 14 17V7h5V3h-7z"/></svg>';
   return '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 19V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5z"/></svg>';
 }
+
 function fill(id,data,kind,palette){
   palette=palette||colores;
   const track=document.getElementById(id);
@@ -447,7 +472,7 @@ function fill(id,data,kind,palette){
   
   track.innerHTML=data.map((it,i)=>`
     <div class="card ${isInteractive ? 'clickable' : ''}" 
-         ${isInteractive ? `data-title="${it.t}" data-desc="${it.d}" data-kind="${kind}"` : ''}>
+         ${isInteractive ? `data-title="${it.t}" data-desc="${it.d}" data-kind="${kind}" data-url="${it.url || ''}"` : ''}>
       <div class="thumb" style="background:${palette[i%palette.length]}">${iconSVG(kind)}</div>
       <div class="body"><h3>${it.t}</h3><p>${it.d}</p></div>
     </div>`).join('');
@@ -455,13 +480,15 @@ function fill(id,data,kind,palette){
   if (isInteractive) {
     track.querySelectorAll('.card').forEach(card => {
       card.addEventListener('click', () => {
-        openModal(card.dataset.title, card.dataset.desc, card.dataset.kind);
+        openModal(card.dataset.title, card.dataset.desc, card.dataset.kind, card.dataset.url);
       });
     });
   }
 }
+
 fill('videos-track',videos,'video');
 fill('fotos-track',fotos,'foto');
+
 const musica=[
   {t:'Charango',d:'Cuerdas que le dan alma al folclore calchaquí.'},
   {t:'Bombo legüero',d:'El corazón que marca el ritmo de las peñas.'},
